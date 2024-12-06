@@ -1,24 +1,36 @@
+name: Deploy Welcome Page to GitHub Pages
+
 on:
   push:
     branches:
-      - main
+      - main  # Trigger deployment on changes to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+    # Set up Node.js (for deploying with GitHub Pages)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
 
-      - name: Build and deploy
-        run: |
-          npm run build
-          npm run deploy
+    # Install dependencies (if any)
+    - name: Install dependencies
+      run: npm install
 
-      - name: Verify deployment
-        uses: actions/verify-deployment@v1
-        with:
-          url: https://github.com/Hema286/welcome_template.git
+    # Install GitHub Pages CLI (if not using a build tool)
+    - name: Install GitHub Pages CLI
+      run: npm install --global gh-pages
+
+    # Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages
+      run: |
+        npx gh-pages -d . # Deploy all files from the root directory
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
