@@ -1,3 +1,5 @@
+name: Deploy and Verify
+
 on:
   push:
     branches:
@@ -17,5 +19,3 @@ jobs:
         run: |
           npm run build
           npm run deploy
-
-     
