@@ -1,36 +1,24 @@
-name: Deploy Welcome Page to GitHub Pages
-
 on:
   push:
     branches:
-      - main  # Trigger deployment on changes to the main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    # Checkout the repository
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Set up Node.js (for deploying with GitHub Pages)
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Install dependencies
+        run: npm install
 
-    # Install dependencies (if any)
-    - name: Install dependencies
-      run: npm install
+      - name: Build and deploy
+        run: |
+          npm run build
+          npm run deploy
 
-    # Install GitHub Pages CLI (if not using a build tool)
-    - name: Install GitHub Pages CLI
-      run: npm install --global gh-pages
-
-    # Deploy to GitHub Pages
-    - name: Deploy to GitHub Pages
-      run: |
-        npx gh-pages -d . # Deploy all files from the root directory
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+      - name: Verify deployment
+        uses: actions/verify-deployment@v1
+        with:
+          url: C:\Users\saikuhe\Desktop\welcome page\index.html
