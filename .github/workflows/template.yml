@@ -3,19 +3,23 @@ name: Deploy and Verify
 on:
   push:
     branches:
-      - main
+      - main  # Trigger deployment on changes to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+    # Set up Node.js (for deploying with GitHub Pages)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
 
-      - name: Build and deploy
-        run: |
-          npm run build
-          npm run deploy
+    # Install dependencies (if any)
+    - name: Install dependencies
+      run: npm install
